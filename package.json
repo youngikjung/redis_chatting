@@ -1,0 +1,52 @@
+{
+  "name": "throo_cat",
+  "version": "0.0.1",
+  "description": "API service for chat app.",
+  "main": "/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "jwt-authentication",
+    "jwt",
+    "mysql",
+    "authentication"
+  ],
+  "author": "throo chat api",
+  "license": "MIT",
+  "dependencies": {
+    "@socket.io/redis-adapter": "^7.0.0",
+    "axios": "^0.20.0",
+    "bcryptjs": "^2.4.3",
+    "bee-queue": "^1.4.0",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "connect-redis": "^6.0.0",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
+    "currency.js": "^1.2.2",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "firebase-admin": "^9.4.1",
+    "http": "0.0.1-security",
+    "http-errors": "^1.7.3",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.11",
+    "knex-migrate": "^1.7.4",
+    "moment-timezone": "^0.5.31",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "rand-token": "^1.0.1",
+    "redis": "^3.1.2",
+    "socket.io": "^4.3.2",
+    "socket.io-redis": "^6.1.1",
+    "uuid": "^7.0.2",
+    "validate.js": "^0.13.1"
+  }
+}

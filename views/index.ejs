@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name = "viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scaleable=0">
+    <title>스루</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .chatting {
+        width: 100%;
+        height: 100vh;
+        background-color: #E5E5E5;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* header */
+    .header {
+        width: 100%;
+        padding: 8px 4vw 16px 4vw;
+        background-color: #fff;
+    }
+
+    .header .title {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 8px;
+        min-height: 30px;
+    }
+
+    .header h2 {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    /* 채팅내용 */
+    .mainChat {
+        width: 100%;
+        padding: 2vh 4vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        position: relative;
+        overflow-y: scroll;
+        display: inline-block;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        background: #E5E5E5;
+    }
+
+    .mainChat::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mainChat .time {
+        margin-top: 4px;
+        font-size: 10px;
+        font-weight: 400;
+    }
+
+    .mainChat .text p {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        color: #fff;
+        overflow: hidden;
+        word-wrap: break-word;
+    }
+
+    /* 고객채팅 */
+    .clientChat {
+        margin-bottom: 12px;
+    }
+
+    .clientChat .time {
+        margin-left: 60px;
+    }
+
+    .client {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+    }
+
+    .client .car {
+        margin-right: 3px;
+        padding: 5px 7px;
+        background-color: #2f2f2f;
+        border-radius: 50px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .client .text {
+        position: relative;
+        max-width: 60%;
+        padding: 8px 16px;
+        margin-left: 4px;
+        background-color: #2f2f2f;
+        border-radius: 10px;
+    }
+
+    .client .text:after {
+        content: "";
+        width: 0px;
+        height: 0px;
+        position: absolute;
+        border-left: 10px solid transparent;
+        border-right: 10px solid #2f2f2f;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid #2f2f2f;
+        left: -10px;
+        bottom: 0px;
+    }
+
+    /* 사장님채팅 */
+    .ceo {
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+        margin-bottom: 12px;
+    }
+
+    .ceo .text {
+        position: relative;
+        max-width: 60%;
+        padding: 8px 16px;
+        margin-left: 4px;
+        background-color: #6490E8;
+        border-radius: 10px;
+    }
+
+    .ceo .text:after {
+        content: "";
+        width: 0px;
+        height: 0px;
+        position: absolute;
+        border-left: 10px solid #6490E8;
+        border-right: 10px solid transparent;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid #6490E8;
+        right: -10px;
+        bottom: 0px;
+    }
+
+    .ceo .text p {
+        font-weight: 700;
+    }
+
+    .ceo .time {
+        margin-right: 5px;
+    }
+
+    /* 채팅입력 */
+    .chatBottom {
+        margin-top: auto;
+    }
+
+    .textChat {
+        background-color: #fff;
+        min-height: 56px;
+        max-height: 56px;
+        padding: 8px 4vw;
+        display: flex;
+    }
+    
+    textarea {
+        position: relative;
+        width: 100%;
+        padding: 6px 76px 6px 16px;
+        max-height: 40px;
+        min-height: 40px;
+        border: none;
+        outline: none;
+        background-color: #F1F3F7;
+        overflow-y: scroll;
+        display: inline-block;
+        border-radius: 4px;
+        line-height: 30px;
+    }
+
+    textarea::placeholder {
+        font-size: 14px;
+        font-weight: 400;
+        color: #A1A1A1;
+    }
+
+    .textChat button {
+        position: absolute;
+        margin-right: 4vw;
+        border: none;
+        outline: none;
+        background: none;
+    }
+
+    /* 채팅자동입력 */
+    .automatic {
+        margin-top: auto;
+        width: 100%;
+        padding: 8px 4vw 0 4vw;
+        border-radius: 8px 8px 0% 0%;
+        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
+        background-color: #FBFBFD;
+        border-bottom: 1px solid #f1f3f7;
+    }
+
+    .aChat {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 12px 0;
+    }
+
+    .aChat p {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .aChat button {
+        margin-left: auto;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    .edit_message {
+        display: none;
+        right: 45px;
+    }
+    .send {
+        display: block;
+        right: 0;
+    }
+
+    .cancel_button {
+        display: none;
+        right: 0;
+    }
+
+</style>
+<script type="text/javascript">
+    
+</script>
+<body>
+    <div class="chatting">
+        <div class="header">
+            <div class="title">
+                <img src="img/chatting.png" alt="채팅연결 이미지" width="71px" height="24px" />
+                <img src="img/rightArrow.png" alt="더보기버튼 이미지" width="10px" height="auto"
+                    style=" margin-top: 5px; margin-left: 4px" />
+            </div>
+            <h2 id="nickname" class="username"></h2>
+        </div>
+        <div class="mainChat" id="mainChat" name="mainChat">
+        </div>
+        <div class="chatBottom">
+            <div class="automatic" id="automatic">
+                <div class="autoChat" id="autoChat" name="autoChat">
+                </div>
+            </div>
+            <div class="textChat" id="textChat">
+                <textarea class="chat" name="chat" id="chat" cols="30" rows="10" value=""></textarea>
+                <button class="send" name='send' id='send'>
+                    <img id="changeImg" src="img/sendButton.png" alt="채팅 보내기 버튼" width="64px" height="40px" />
+                </button>
+                <button class="edit_message" name='edit_message' id='edit_message'>
+                    <img id="changeImg" src="img/submit.png" alt="채팅 보내기 버튼" width="64px" height="40px" />
+                </button>
+                <button class="cancel_button" name='cancel_button' id='cancel_button'>
+                    <img id="cancelImg" src="img/cancel.png" alt="취소 버튼" width="44px" height="40px" />
+                </button>
+                <p id="item_index" name="item_index" hidden value="0" style="display: none;"/>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript">
+        const socket = io('/chat/throoChatRoom', {transports: ['websocket']});
+        const focusChat = document.getElementById('chat');
+        const focusMessage = document.getElementById('automatic');
+        const input = document.querySelector('textarea');
+        const iActivate = "<%= activate %>";
+        const iCarNm = "<%= carNm %>";
+        const iEmail = "<%= sEmail %>";
+        const iStoreNm = "<%= storeNm %>";
+        const iCharactor = "<%= charactor %>";
+        const iStoreId = "<%= storeId %>";
+        const iOrderId = "<%= orderId %>";
+        const iUserId = "<%= userId %>";
+        let iMessageList = `<%- (messageList) %>`;
+        let iUserContentList = `<%- (userContentList) %>`;
+        iMessageList = JSON.parse(iMessageList.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+        iUserContentList = JSON.parse(iUserContentList.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+
+        const inputMessageTagAppend = (key,message) => {
+            $('#autoChat').append(
+                `<div class='aChat'>`
+                +   "<img src='svg/chatIng.svg' alt='말풍선이미지' width='20px' style='margin-right: 8px;'>"
+                +   `<p id=${key.toString() + "p"} class=${key.toString() + "p"} name=${key.toString() + "p"} style='cursor:pointer'>${message}</p>`
+                +   `<button class=${key.toString() + "btnChangeAuto"} name=${key.toString() + "btnChangeAuto"} id=${key.toString() + "btnChangeAuto"}>`
+                +       "<img src='svg/changeChat.svg' alt='수정버튼아이콘' width='39px'>"
+                +   "</button>"
+                +"</div>"
+            );
+        }
+
+        const messageTagAppend = (key,message,date) => {
+            let temp = iStoreNm
+            if(iCharactor.toString() === "store"){
+                temp = iCarNm
+            }
+            if(iCharactor.toString() === "store"){
+                if(key.toString() === "customer"){
+                    $('#mainChat').append(
+                        "<div class='clientChat'>"
+                        +   "<div class='client'>"
+                        +       `<div class='car'>${temp}</div>`
+                        +       "<div class='text'>"
+                        +           `<p>${message}</p>`
+                        +       "</div>"
+                        +   "</div>"
+                        +   `<p class='time'>${date}</p>`
+                        +"</div>"
+                    );
+                } else {
+                    $('#mainChat').append(
+                        "<div class='ceo'>"
+                        +   "<div class='text'>"
+                        +       `<p>${message}</p>`
+                        +   "</div>"
+                        +   `<p class='time'>${date}</p>`
+                        +"</div>"
+                    );
+                }
+            } else {
+                if(key.toString() === "customer"){
+                    $('#mainChat').append(
+                        "<div class='ceo'>"
+                        +   "<div class='text'>"
+                        +       `<p>${message}</p>`
+                        +   "</div>"
+                        +   `<p class='time'>${date}</p>`
+                        +"</div>"
+                    );
+                } else {
+                    $('#mainChat').append(
+                        "<div class='clientChat'>"
+                        +   "<div class='client'>"
+                        +       `<div class='car'>${temp}</div>`
+                        +       "<div class='text'>"
+                        +           `<p>${message}</p>`
+                        +       "</div>"
+                        +   "</div>"
+                        +   `<p class='time'>${date}</p>`
+                        +"</div>"
+                    );
+                }
+            }
+        }
+
+        const sendMessage = (aIndex,sIndex,dIndex,qIndex,zIndex,hIndex) => {
+            const oData = {
+                userId: iUserId,
+                storeId: iStoreId,
+                date : aIndex,
+                room : sIndex,
+                owner : dIndex,
+                os_version : qIndex,
+                message : zIndex,
+                orderId: hIndex
+            }
+
+            $.ajax({
+                url : 'https://api.ivid.kr/ceo/app/ceo/order/chat/sendMessage',
+                dataType : 'json',
+                type : 'POST',
+                data : oData,
+                success : async (data) => {},
+                error: function(xhr,status, error){}
+            });
+        }
+
+        const editUserMessage = (aIndex,sIndex) => {
+            let oData = {
+                storeId: iStoreId,
+                key: aIndex,
+                content: sIndex,
+            }
+            if(iCharactor.toString() === "store"){
+                console.log("2");
+                $.ajax({
+                    url : 'https://api.ivid.kr/ceo/app/ceo/order/chat/editStoreInputMessage',
+                    dataType : 'json',
+                    type : 'POST',
+                    data : oData,
+                    success : async (data) => {},
+                    error: function(xhr,status, error){}
+                });
+                
+            } else {
+                console.log("3");
+                oData = {
+                    userId: iUserId,
+                    key: aIndex,
+                    content: sIndex,
+                }
+                $.ajax({
+                    url : 'https://api.ivid.kr/ceo/app/ceo/order/chat/editUserInputMessage',
+                    dataType : 'json',
+                    type : 'POST',
+                    data : oData,
+                    success : async (data) => {},
+                    error: function(xhr,status, error){}
+                });
+            }
+        }
+
+        
+        window.onload = function () {
+            $('#mainChat').animate({ scrollTop: $('#mainChat')[0].scrollHeight });
+            $(function() {
+                let temp = iStoreNm + "님 채팅연결";
+                if(iCharactor.toString() === "store"){
+                    temp = iCarNm + "님 채팅연결"
+                }
+                $('.username').text(temp);
+            });
+            if(iMessageList !== undefined && iMessageList !== null && iMessageList.length > 0){
+                for (const iterator of iMessageList) {
+                    messageTagAppend(iterator.key,iterator.message,iterator.date);
+                }
+            }
+            if(iUserContentList !== undefined && iUserContentList !== null && iUserContentList.length > 0){
+                for (const iterator of iUserContentList) {
+                    inputMessageTagAppend(iterator.key,iterator.content);
+                }
+            }
+
+            $('#0btnChangeAuto').on('click', async () => {
+                if ($('#send').css('display') == 'block') {
+                    $('#send').css('display', 'none');
+                    $('#edit_message').css('display', 'block');
+                    $('#cancel_button').css('display', 'block');
+                    $('#mainChat').css('opacity', '0.4');
+                    $('#mainChat').css('background', '#111');
+                    $('#chat').css('width', '75%');
+                }
+                $('#item_index').val("0"); 
+                input.value = iUserContentList[0].content
+            });
+            
+            $('#1btnChangeAuto').on('click', async () => {
+                if ($('#send').css('display') == 'block') {
+                    $('#send').css('display', 'none');
+                    $('#edit_message').css('display', 'block');
+                    $('#cancel_button').css('display', 'block');
+                    $('#mainChat').css('opacity', '0.4');
+                    $('#mainChat').css('background', '#111');
+                    $('#chat').css('width', '75%');
+                }
+                $('#item_index').val("1"); 
+                input.value = iUserContentList[1].content
+            });
+
+            $('#2btnChangeAuto').on('click', async () => {
+                if ($('#send').css('display') == 'block') {
+                    $('#send').css('display', 'none');
+                    $('#edit_message').css('display', 'block');
+                    $('#cancel_button').css('display', 'block');
+                    $('#mainChat').css('opacity', '0.4');
+                    $('#mainChat').css('background', '#111');
+                    $('#chat').css('width', '75%');
+                }
+                $('#item_index').val("2"); 
+                input.value = iUserContentList[2].content
+            });
+
+            $('#3btnChangeAuto').on('click', async () => {
+                if ($('#send').css('display') == 'block') {
+                    $('#send').css('display', 'none');
+                    $('#edit_message').css('display', 'block');
+                    $('#cancel_button').css('display', 'block');
+                    $('#mainChat').css('opacity', '0.4');
+                    $('#mainChat').css('background', '#111');
+                    $('#chat').css('width', '75%');
+                }
+                $('#item_index').val("3"); 
+                input.value = iUserContentList[3].content
+            });
+
+            $('#4btnChangeAuto').on('click', async () => {
+                if ($('#send').css('display') == 'block') {
+                    $('#send').css('display', 'none');
+                    $('#edit_message').css('display', 'block');
+                    $('#cancel_button').css('display', 'block');
+                    $('#mainChat').css('opacity', '0.4');
+                    $('#mainChat').css('background', '#111');
+                    $('#chat').css('width', '75%');
+                }
+                $('#item_index').val("4"); 
+                input.value = iUserContentList[4].content
+            });
+            
+            focusChat.addEventListener('focus', (event) => {
+                const sIndex = $('#chat').val();
+                document.getElementById("automatic").style.display = "none";
+                if ($('#edit_message').css('display') == 'block') {
+                    $('#send').css('display', 'none');
+                    $('#edit_message').css('display', 'block');
+                    $('#cancel_button').css('display', 'block');
+                    $('#mainChat').css('opacity', '0.4');
+                    $('#mainChat').css('background', '#111');
+                    $('#chat').css('width', '75%');
+                } else {
+                    $('#send').css('display', 'block');
+                    $('#mainChat').css('opacity', '1');
+                    $('#mainChat').css('background', '#E5E5E5');
+                    $('#edit_message').css('display', 'none');
+                    $('#cancel_button').css('display', 'none');
+                    $('#chat').css('width', '100%');
+                }
+            }, true);
+
+            focusChat.addEventListener('blur', (event) => {
+                document.getElementById("automatic").style.display = "block";
+                if ($('#edit_message').css('display') == 'block') {
+                    $('#edit_message').css('display', 'block');
+                    $('#cancel_button').css('display', 'block');
+                    $('#mainChat').css('opacity', '0.4');
+                    $('#mainChat').css('background', '#111');
+                    $('#send').css('display', 'none');
+                    $('#chat').css('width', '75%');
+                } else {
+                    $('#edit_message').css('display', 'none');
+                    $('#cancel_button').css('display', 'none');
+                    $('#mainChat').css('opacity', '1');
+                    $('#mainChat').css('background', '#E5E5E5');
+                    $('#send').css('display', 'block');
+                    $('#chat').css('width', '100%');
+                }
+            }, true);
+
+            $("#0p").on('click', async () => {
+                input.value = iUserContentList[0].content
+            });
+
+            $("#1p").on('click', async () => {
+                input.value = iUserContentList[1].content
+            });
+
+            $("#2p").on('click', async () => {
+                input.value = iUserContentList[2].content
+            });
+
+            $("#3p").on('click', async () => {
+                input.value = iUserContentList[3].content
+            });
+
+            $("#4p").on('click', async () => {
+                input.value = iUserContentList[4].content
+            });
+        }
+
+        socket.on('receive message', function(data){
+            const newData = {
+                key: data.key,
+                message :  data.message,
+                date :  data.date,
+                sNm : data.sNm
+            };
+            messageTagAppend(newData.key,newData.message,newData.date);
+            $('#mainChat').animate({ scrollTop: $('#mainChat')[0].scrollHeight });
+        });
+
+        $('#send').on('click', async (e) => {
+            const sIndex = $('#chat').val();
+            if(sIndex !== ""){
+                const sendData = {
+                    room: "throo" + iOrderId.toString() + iUserId.toString() + iStoreId.toString(), 
+                    message: $('#chat').val(), 
+                    owner: iCharactor,
+                    date: moment().format('LT'),
+                    createDate: moment().format('YYYY-MM-DD HH:mm'),
+                    sNm: iCarNm ,
+                    os_version: "",
+                    orderId: iOrderId,
+                    userId: iUserId,
+                    storeId: iStoreId
+                }
+                socket.emit('send message', sendData);
+                await sendMessage(sendData.createDate,sendData.room,sendData.owner,sendData.os_version,sendData.message,sendData.orderId);
+                input.value = "";
+                $("#chat").focus();
+                $('#mainChat').animate({ scrollTop: $('#mainChat')[0].scrollHeight });
+                $('#edit_message').css('display', 'none');
+                $('#send').css('display', 'block');
+                e.preventDefault();
+            }
+        });
+
+        $('#edit_message').on('click', async (e) => {
+            const sKey = $('#item_index').val();
+            const sMessage = $('#chat').val();
+            if(sKey !== undefined && parseInt(sKey) < 5 && sMessage !== undefined && sMessage.toString() != ""){
+                await editUserMessage(sKey,sMessage);
+                $('#chat').val("");
+                $('#edit_message').css('display', 'none');
+                $('#cancel_button').css('display', 'none');
+                $('#mainChat').css('opacity', '1');
+                $('#mainChat').css('background', '#E5E5E5');
+                $('#send').css('display', 'block');
+                $('#chat').css('width', '100%');
+                document.location.href = window.location.href;
+            }
+        });
+
+        $('#cancel_button').on('click', async (e) => {
+            $('#chat').val("");
+            $('#edit_message').css('display', 'none');
+            $('#cancel_button').css('display', 'none');
+            $('#mainChat').css('opacity', '1');
+            $('#mainChat').css('background', '#E5E5E5');
+            $('#send').css('display', 'block');
+            $('#chat').css('width', '100%');
+        });
+    </script>
+</body>
+
+</html>
